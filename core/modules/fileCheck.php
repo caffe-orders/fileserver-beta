@@ -74,25 +74,25 @@ class fileCheck {
                 break;
             case 'dish':
                 $scheme = array(
-                    'jpg'   => 1,
+                    'jpeg'   => 1,
                     'png'   => 1.3
                 );
                 break;
             case 'roomSheme':
                 $scheme = array(
-                    'jpg'   => 1,
+                    'jpeg'   => 1,
                     'png'   => 1.3
                 );
                 break;
             case 'albumImg':
                 $scheme = array(
-                    'jpg'   => 1,
+                    'jpeg'   => 1,
                     'png'   => 1.3
                 );
                 break;
             default :
                 $scheme = array(
-                    'jpg'   => 1,
+                    'jpeg'   => 1,
                     'png'   => 1.3,
                     '3d'    => 20
                 );

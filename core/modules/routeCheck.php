@@ -23,6 +23,7 @@ class routeCheck
     
     private function initUrl()
     {        
+        
         if(count($this->splitedPath) != count($this->schemeUrl))
         {
             $this->url = null;

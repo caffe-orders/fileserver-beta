@@ -28,7 +28,7 @@ if(isset($sessionHash) && isset($token) && isset($filePath)
     if($result == $token)
     {        
         $userInfo = new UserInfo($sessionHash);
-        $path = new routeCheck($filePath, $fileType,$userInfo->getPlacesAndRooms());      
+        $path = new routeCheck($filePath, $fileType, $userInfo->getPlacesAndRooms());      
         
         if($path->urlExists())
         {           
