@@ -1,6 +1,10 @@
 <?php
+ini_set('display_errors', 1);
+session_start();
+ob_implicit_flush(0);
+date_default_timezone_set("Europe/Moscow");
 
-$url =$_SERVER['DOCUMENT_ROOT']."/";
+$url = $_SERVER['DOCUMENT_ROOT']."/";
 $apiUrl = 'http://api.caffe.ru/';                //Impotant 
 define('URL',$url);
 define('APIURL', $apiUrl);
@@ -9,53 +13,70 @@ $responce = 'load resurses fail';
 
 include_once('core/Autoload.php');
 
-$user_id = filter_input(INPUT_GET, 'user_id');
-$code = filter_input(INPUT_GET, 'code');
-$ROUTE = new Route();
-$ROUTE->start();
+$sessionHash    = filter_input(INPUT_POST, 'sessionHash');
+$token          = filter_input(INPUT_POST, 'token');
+$filePath       = filter_input(INPUT_POST, 'path');
+$fileType       = filter_input(INPUT_POST, 'fileType');
+$fileName       = filter_input(INPUT_POST, 'fileName');
 
-if(isset($user_id) && isset($code))
+if(isset($sessionHash) && isset($token) && isset($filePath)
+        && isset($fileType) && isset($fileName))
 {
-    $downloadsessions = new DownloadSessions();
-    $result = $downloadsessions->info($user_id, $code);
-    if($result != 'FALSE' && $result != null && is_numeric($result))
-    {
-        $path = new routeCheck($ROUTE->param1, $ROUTE->param2, $ROUTE->param3, $ROUTE->param4);        
-        if($path->createUrl())
-        {
-            $downloadsessions->fileload($user_id, $code);
-            if(isset($_FILES['file']) && isset($_POST['filename']))
+    $filesToken = new Token();
+    $result = $filesToken->get($sessionHash, $token);
+    
+    if($result == $token)
+    {        
+        $userInfo = new UserInfo($sessionHash);
+        $path = new routeCheck($filePath, $fileType,$userInfo->getPlacesAndRooms());      
+        
+        if($path->urlExists())
+        {           
+            if(isset($_FILES['file']))
             {
-                $filename = $_POST['filename'];
-                $temp = $_FILES['file']['tmp_name'];
-                $name_file = $path->url.'/'.$filename;
-                if(move_uploaded_file($temp, $name_file))
+                $file = new fileCheck($_FILES['file'], $fileName, $fileType, $path->url);
+                if($file->trueFormat())
                 {
-                    $responce = 'TRUE';
+                    if($path->createUrl() == true)
+                    {
+                        if($file->upload() == true)
+                        {
+                            $filesToken->delete($sessionHash, $token);
+                            $responce = array(200, 'File upload');
+                        }
+                        else
+                        {
+                            $responce = array(400, 'Error(load file)');
+                        }
+                    }
+                    else
+                    {
+                        $responce = array(400, 'Error(create url)');
+                    }                    
                 }
                 else
                 {
-                    $responce = 'FALSE';
+                    $responce = array(400, 'Wrong file format');
                 }
             }
             else
             {
-                $responce = 'FALSE';
+                $responce = array(400, 'File not found');
             }
         }
         else
         {
-            $responce = 'FALSE';
+            $responce = array(400, 'File path is wrong');
         }        
     }    
     else
     {
-        $responce = 'NO_ACCESS_RIGHTS';
+        $responce = array(400, 'Token not found');
     }
 }
 else
 {
-   $responce = 'NO_ACCESS_RIGHTS';
+   $responce = array(400, 'Arguments is missing');
 }
-
-echo $responce;
+header('HTTP/1.0' . ' ' . $responce[0] . ' ' . $responce[1]);
+echo $responce[1];

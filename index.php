@@ -1,3 +1,3 @@
 <?php
-echo '<div align="center">FILES SERWER UP</div>';
+header('Location: http://caffe.ru', true, 301);
 ?>

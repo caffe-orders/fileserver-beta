@@ -1,11 +1,4 @@
 <?php
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
  * Description of routeCheck
  *
@@ -13,71 +6,177 @@
  */
 class routeCheck
 {
-    public $url;
-    public function __construct($ar1,$ar2,$ar3,$ar4)
+    public $url = null;
+    private $splitedPath = array(); 
+    private $schemeUrl = array(); 
+    private $placesAndRooms = array(); 
+    private $rooms = null;
+    
+    public function __construct($filePath, $fileType, $placesAndRooms)
     {
-        $this->arg = array();        
-        $this->arg[1] = $ar1;
-        $this->arg[2] = $ar2;
-        $this->arg[3] = $ar3;
-        $this->arg[4] = $ar4;      
-        $this->checkUrl();        
+        $this->splitedPath = explode('/',$filePath);
+        
+        $this->placesAndRooms = $placesAndRooms;
+        $this->initSchem($fileType);
+        $this->initUrl();        
     }
     
-    private function checkUrl()
-    {
-        $url = "";
-        if($this->arg[1] == 'caffes')
+    private function initUrl()
+    {        
+        if(count($this->splitedPath) != count($this->schemeUrl))
         {
-            $url .=$this->arg[1];
-            if(is_numeric($this->arg[2]))
+            $this->url = null;
+            return ;
+        }
+        foreach ($this->splitedPath as $key => $pathItem)
+        {
+            if($pathItem != $this->schemeUrl[$key])
             {
-                $url .= "/".$this->arg[2];
-                if($this->arg[3] == 'album')
+                switch ($this->schemeUrl[$key])
                 {
-                    $url .= "/".$this->arg[3]."/".$this->arg[4];                    
-                }
-                else if($this->arg[3] == 'rooms')
-                {
-                    if(is_numeric($this->arg[4]))
-                    {
-                        $url .= "/".$this->arg[3]."/".$this->arg[4]; 
-                    }
-                    else
-                    {
-                        return false;
-                    }
+                    case 'PLACE_ID':
+                        if(TypeChecker::IsInt($pathItem))
+                        {
+                            $trueId = false;
+                            if($this->placesAndRooms == null)
+                            {
+                                $this->url = null;
+                                return ; 
+                            }
+                            foreach($this->placesAndRooms as $item)
+                            {
+                                if($item['placeId'] == $pathItem)
+                                {
+                                    $this->rooms = $item['roomsId'];
+                                    $this->url .= $pathItem . '/';
+                                    $trueId = true;
+                                    break;
+                                }
+                            }    
+                            if(!$trueId)
+                            {
+                                $this->url = null;
+                                return ; 
+                            }
+                        }
+                        else
+                        {
+                            $this->url = null;
+                            return ;
+                        }
+                    break;
+                    case 'ROOM_ID':
+                        if(TypeChecker::IsInt($pathItem))
+                        {
+                            if($this->rooms != null)
+                            {
+                                $trueId = false;
+                                foreach($this->rooms as $roomId)
+                                {
+                                    if($roomId == $pathItem)
+                                    {
+                                        $this->url .= $pathItem . '/';
+                                        $trueId = true;
+                                        break;
+                                    }
+                                }    
+                                if(!$trueId)
+                                {
+                                    $this->url = null;
+                                    return ; 
+                                }
+                            }
+                            else
+                            {
+                                $this->url = null;
+                                return ;
+                            }
+                        }
+                        else
+                        {
+                            $this->url = null;
+                            return ;
+                        }
+                    break;
+                    default:
+                        $this->url = null;
+                    break;
                 }
             }
             else
             {
-                return false;
+                $this->url .= $pathItem . '/';
             }
-        }
-        else
+        }        
+    }
+    
+    public function urlExists()
+    {        
+        if($this->url == null)
         {
             return false;
         }
-        $this->url = $url;
+        else
+        {
+            return true;
+        }
     }
     
     public function createUrl()
     {     
-        if($this->url != false)
+        $result = false;
+        if($this->url != null)
         {
             if(!file_exists($this->url))
             {
                 if(mkdir($this->url, 0777, true))
                 {
-                    return true;
+                    $result = true;
                 }
-                return false;
-            }    
+            }       
             else
-            {   
-                return true;
+            {
+                $result = true;
             }
-            
+        }        
+        return $result;        
+    }
+    
+    private function initSchem($fileType)
+    {
+        $scheme = array();
+        switch($fileType)
+        {
+             case 'previewPlace':
+                $scheme = array(
+                    'places',
+                    'PLACE_ID'                    
+                );
+                break;           
+            case 'roomSheme':
+                $scheme = array(
+                    'places',
+                    'PLACE_ID',
+                    'rooms',
+                    'ROOM_ID'
+                );
+                break;
+            case 'albumImg':
+                $scheme = array(
+                    'places',
+                    'PLACE_ID',
+                    'album'
+                );
+                break;
+            case 'dish':
+                $scheme = array(
+                    'dishs'
+                );
+                break;
+            default :
+                $scheme = array();
+                break;
         }
+        $this->schemeUrl = $scheme;
     }
 }
