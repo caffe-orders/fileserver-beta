@@ -28,6 +28,7 @@ class routeCheck
             $this->url = null;
             return ;
         }
+        $this->url = 'files/';
         foreach ($this->splitedPath as $key => $pathItem)
         {
             if($pathItem != $this->schemeUrl[$key])

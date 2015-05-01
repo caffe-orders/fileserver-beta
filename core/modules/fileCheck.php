@@ -21,7 +21,7 @@ class fileCheck {
     
     public function __construct($file, $name, $type, $url) {
         $this->file = $file;
-        $this->fileName = $name;
+        $this->fileName = basename($name);
         $this->urlPath = $url;
         $this->initScheme($type);
     }   
