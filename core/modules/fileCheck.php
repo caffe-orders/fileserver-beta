@@ -69,32 +69,38 @@ class fileCheck {
             case 'previewPlace':
                 $scheme = array(
                     'jpeg'   => 1,
-                    'jpg'   =>0.5
+                    'jpg'    =>0.5
                 );
                 break;
+             case 'previewComplexDinner':
+                $scheme = array(
+                    'jpeg'   => 1,
+                    'jpg'    =>0.5                    
+                );
+                break; 
             case 'dish':
                 $scheme = array(
                     'jpeg'   => 1,
-                    'png'   => 1.3
+                    'png'    => 1.3
                 );
                 break;
             case 'roomSheme':
                 $scheme = array(
                     'jpeg'   => 1,
-                    'png'   => 1.3
+                    'png'    => 1.3
                 );
                 break;
             case 'albumImg':
                 $scheme = array(
                     'jpeg'   => 1,
-                    'png'   => 1.3
+                    'png'    => 1.3
                 );
                 break;
             default :
                 $scheme = array(
                     'jpeg'   => 1,
-                    'png'   => 1.3,
-                    '3d'    => 20
+                    'png'    => 1.3,
+                    '3d'     => 20
                 );
                 break;
         }

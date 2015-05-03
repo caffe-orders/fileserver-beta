@@ -154,7 +154,12 @@ class routeCheck
                     'places',
                     'PLACE_ID'                    
                 );
-                break;           
+                break;        
+             case 'previewComplexDinner':
+                $scheme = array(
+                    'complexDinner'                    
+                );
+                break; 
             case 'roomSheme':
                 $scheme = array(
                     'places',
