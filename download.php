@@ -23,6 +23,7 @@ foreach($rawPost as $key => $value)
 {
     $_POST[$key] = $value;
 }
+print_r($_POST);
 
 
 $sessionHash    = filter_input(INPUT_POST, 'sessionHash');
