@@ -18,7 +18,7 @@ $responce = 'load resurses fail';
 
 include_once('core/Autoload.php');
 
-$rawPost = json_decode(file_get_contents("php://input"));
+$rawPost = json_decode(file_get_contents("php://input"), true);
 foreach($rawPost as $key => $value)
 {
     $_POST[$key] = $value;
