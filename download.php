@@ -1,11 +1,11 @@
 <?php
 ini_set('display_errors', 1);
 session_start();
-header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: http://caffe.ru');
 header('Access-Control-Allow-Headers: Cookie, origin, x-requested-with, content-type');
 header('Access-Control-Allow-Credentials: true');
 header('Access-Control-Allow-Methods: GET,POST');
+header('Content-Type', 'application/javascript; charset=utf8');
 ob_implicit_flush(0);
 date_default_timezone_set("Europe/Moscow");
 
