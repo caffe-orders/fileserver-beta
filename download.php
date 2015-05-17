@@ -46,37 +46,37 @@ if(isset($sessionHash) && isset($token) && isset($filePath)
                         }
                         else
                         {
-                            $responce = array(400, 'Error(load file)');
+                            $responce = array(401, 'Error(load file)');
                         }
                     }
                     else
                     {
-                        $responce = array(400, 'Error(create url)');
+                        $responce = array(402, 'Error(create url)');
                     }                    
                 }
                 else
                 {
-                    $responce = array(400, 'Wrong file format');
+                    $responce = array(403, 'Wrong file format');
                 }
             }
             else
             {
-                $responce = array(400, 'File not found');
+                $responce = array(404, 'File not found');
             }
         }
         else
         {
-            $responce = array(400, 'File path is wrong');
+            $responce = array(405, 'File path is wrong');
         }        
     }    
     else
     {
-        $responce = array(400, 'Token not found');
+        $responce = array(406, 'Token not found');
     }
 }
 else
 {
-   $responce = array(400, 'Arguments is missing');
+   $responce = array(407, 'Arguments is missing');
 }
 header('HTTP/1.0' . ' ' . $responce[0] . ' ' . $responce[1]);
 echo $responce[1];
