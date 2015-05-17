@@ -1,6 +1,7 @@
 <?php
 ini_set('display_errors', 1);
 session_start();
+header('Content-Type: application/json');
 ob_implicit_flush(0);
 date_default_timezone_set("Europe/Moscow");
 
