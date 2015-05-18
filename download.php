@@ -18,14 +18,6 @@ $responce = 'load resurses fail';
 
 include_once('core/Autoload.php');
 
-$rawPost = json_decode(file_get_contents("php://input"), true);
-foreach($rawPost as $key => $value)
-{
-    $_POST[$key] = $value;
-}
-print_r($_POST);
-
-
 $sessionHash    = filter_input(INPUT_POST, 'sessionHash');
 $token          = filter_input(INPUT_POST, 'token');
 $filePath       = filter_input(INPUT_POST, 'path');
