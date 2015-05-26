@@ -84,7 +84,7 @@ class fileCheck {
                     'png'    => 1.3
                 );
                 break;
-            case 'roomSheme':
+            case 'roomScheme':
                 $scheme = array(
                     'jpeg'   => 1,
                     'png'    => 1.3

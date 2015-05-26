@@ -160,7 +160,7 @@ class routeCheck
                     'complexDinner'                    
                 );
                 break; 
-            case 'roomSheme':
+            case 'roomScheme':
                 $scheme = array(
                     'places',
                     'PLACE_ID',
