@@ -70,29 +70,7 @@ class routeCheck
                     case 'ROOM_ID':
                         if(TypeChecker::IsInt($pathItem))
                         {
-                            if($this->rooms != null)
-                            {
-                                $trueId = false;
-                                foreach($this->rooms as $roomId)
-                                {
-                                    if($roomId == $pathItem)
-                                    {
-                                        $this->url .= $pathItem . '/';
-                                        $trueId = true;
-                                        break;
-                                    }
-                                }    
-                                if(!$trueId)
-                                {
-                                    $this->url = null;
-                                    return ; 
-                                }
-                            }
-                            else
-                            {
-                                $this->url = null;
-                                return ;
-                            }
+                            $this->url .= $pathItem . '/';
                         }
                         else
                         {
