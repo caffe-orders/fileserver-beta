@@ -68,7 +68,7 @@ class fileCheck {
         {
             case 'previewPlace':
                 $scheme = array(
-                    'jpeg'   => 1,
+                    'jpeg'   => 1.5,
                     'jpg'    =>0.5
                 );
                 break;
